@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Tic Tac Toe</title>
+    
+</head>
+<body>
+
+<h1>Tic Tac Toe</h1>
+<div id="status">Current Player: X</div>
+<div id="board"></div>
+<button id="restart">Restart Game</button>
+
+<script src="script.js"></script> <!-- Link to your JS file -->
+<script>
+    // Initialize the game
+    const game = new TicTacToe();
+
+    // Function to render the board visually
+    game.printBoard = function() {
+        const boardElement = document.getElementById('board');
+        boardElement.innerHTML = ''; // Clear the board before rendering
+        this.board.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                const cellElement = document.createElement('div');
+                cellElement.classList.add('cell');
+                cellElement.textContent = cell;
+                cellElement.onclick = () => this.makeMove(rowIndex, colIndex);
+                boardElement.appendChild(cellElement);
+            });
+        });
+        this.updateStatus();
+    };
+
+    // Update the status display
+    game.updateStatus = function() {
+        const statusElement = document.getElementById('status');
+        if (!this.isGameActive) {
+            statusElement.textContent = `Game Over! Player ${this.currentPlayer} wins!`;
+        } else {
+            statusElement.textContent = `Current Player: ${this.currentPlayer}`;
+        }
+    };
+
+    // Restart game functionality
+    document.getElementById('restart').onclick = () => {
+        game.restartGame();
+    };
+
+    // Modify restartGame to reset the UI
+    game.restartGame = function() {
+        this.board = [
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', '']
+        ];
+        this.currentPlayer = 'X';
+        this.isGameActive = true;
+        this.printBoard(); // Call the updated printBoard to render the reset board
+    };
+
+    // Initial board rendering
+    game.printBoard();
+</script>
+
+</body>
+</html>
